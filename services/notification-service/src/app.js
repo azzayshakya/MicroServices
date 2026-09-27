@@ -7,15 +7,37 @@ import ApiError from "../../../packages/server-utils/src/api-error.js";
 
 const app = express();
 
+const allowedOrigins = [
+  "http://localhost:3005",
+  "http://localhost:5173",
+  "http://localhost:3000",
+  "https://umbravault.vercel.app",
+  ...(ENV.CLIENT_URL ? [ENV.CLIENT_URL] : []),
+];
+
 app.use(
   cors({
-    origin: ENV.CLIENT_URL,
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+      return callback(new Error(`Origin ${origin} not allowed by CORS`));
+    },
     credentials: true,
   }),
 );
 
 app.use(express.json({ limit: "16kb" }));
 app.use(express.urlencoded({ extended: true, limit: "16kb" }));
+
+app.get(["/health", "/api/v1/health"], (req, res) => {
+  return res.status(200).json({
+    status: "ok",
+    service: "notification-service",
+    timestamp: new Date().toISOString(),
+    uptime: Math.floor(process.uptime()),
+  });
+});
 
 app.use("/api/v1", routes);
 
