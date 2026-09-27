@@ -1,0 +1,12 @@
+{
+  "name": "@monorepo/kafka-client",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "src/index.js",
+  "exports": {
+    ".": "./src/index.js"
+  },
+  "dependencies": {
+    "kafkajs": "^2.2.4"
+  }
+}

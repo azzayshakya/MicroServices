@@ -1,0 +1,17 @@
+{
+  "name": "monorepo",
+  "private": true,
+  "version": "1.0.0",
+  "workspaces": [
+    "clients/*",
+    "packages/*",
+    "services/*"
+  ],
+  "scripts": {
+    "dev:task-service": "npm run dev --workspace=services/task-service",
+    "start:task-service": "npm run start --workspace=services/task-service",
+    "dev:notification-service": "npm run dev --workspace=services/notification-service",
+    "start:notification-service": "npm run start --workspace=services/notification-service",
+    "dev:web-client": "npm run dev --workspace=clients/web-client"
+  }
+}
