@@ -1,4 +1,8 @@
-import { addNotificationJob } from "../queues/notification.queue.js";
+import {
+  addNotificationJob,
+  clearAllQueueData,
+  debugPrintAllJobsInQueue,
+} from "../queues/notification.queue.js";
 import { notificationService } from "../services/notification.service.js";
 import { TEMPLATE_REGISTRY } from "../templates/templateRegistry.js";
 import ApiError from "../../../../packages/server-utils/src/api-error.js";
@@ -132,6 +136,35 @@ export const markAllAsRead = async (req, res, next) => {
     return res
       .status(200)
       .json(ApiResponse.ok(result, "All notifications marked as read"));
+  } catch (error) {
+    next(error);
+  }
+};
+export const getQueueDebugDump = async (req, res, next) => {
+  try {
+    const queueData = await debugPrintAllJobsInQueue();
+    return res
+      .status(200)
+      .json(
+        ApiResponse.ok(
+          queueData,
+          "Current queue jobs printed to terminal and returned.",
+        ),
+      );
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * Controller to completely purge/flush all jobs in the Redis queue
+ */
+export const purgeRedisQueue = async (req, res, next) => {
+  try {
+    const result = await clearAllQueueData();
+    return res
+      .status(200)
+      .json(ApiResponse.ok(result, "Redis queue successfully purged."));
   } catch (error) {
     next(error);
   }

@@ -2,10 +2,11 @@ import { Notification } from "../models/Notification.model.js";
 import { compileNotificationContent } from "../templates/templateRegistry.js";
 import { socketService } from "./socket.service.js";
 import ApiError from "../../../../packages/server-utils/src/api-error.js";
+import logger from "@monorepo/logger";
 
 export const notificationService = {
   /**
-   * Persists in-app alert and pushes to user's real-time socket room.
+   * Compiles template, writes to MongoDB, and pushes to Socket.IO.
    */
   async processInAppNotification({
     userId,
@@ -14,8 +15,15 @@ export const notificationService = {
     params,
     metadata,
   }) {
+    // 1. Template Compilation (Throws error on missing fields before touching MongoDB)
     const { title, message } = compileNotificationContent(templateKey, params);
 
+    logger.info(
+      `[DB:SAVING] Writing notification to MongoDB for User: ${userId} | App: ${appId} | Template: ${templateKey}`,
+      { title, message, metadata },
+    );
+
+    // 2. Persist to MongoDB
     const notification = await Notification.create({
       userId,
       appId: appId || "umbra-vault",
@@ -25,17 +33,26 @@ export const notificationService = {
       metadata,
     });
 
+    logger.info(
+      `[DB:SAVED] Stored document ID: ${notification._id} in MongoDB.`,
+    );
+
+    // 3. Count unread
     const unreadCount = await Notification.countDocuments({
       userId,
       appId: appId || "umbra-vault",
       isRead: false,
     });
 
-    // Real-time events to power the UI bell icon
+    // 4. Push to Socket.IO
     socketService.emitToUser(userId, "notification:new", notification);
     socketService.emitToUser(userId, "notification:badge_update", {
       unreadCount,
     });
+
+    logger.info(
+      `[SOCKET:EMITTED] Real-time event dispatched to room: user:${userId}`,
+    );
 
     return notification;
   },

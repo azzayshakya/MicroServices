@@ -1,9 +1,8 @@
-// src/services/morningRoutine.service.js
 import { Notification } from "../models/Notification.model.js";
 import { addNotificationJob } from "../queues/notification.queue.js";
+import { getIndianCalendarEvent } from "../constants/indianCalendar.js";
 import logger from "@monorepo/logger";
 
-// Concise coding quotes (< 12 words)
 const MOTIVATIONAL_QUOTES = [
   "Make it work, make it right, make it fast.",
   "Simplicity is the prerequisite for reliability.",
@@ -11,63 +10,75 @@ const MOTIVATIONAL_QUOTES = [
   "Clean code always looks like it was written by someone who cares.",
   "One clean commit every day builds empires.",
   "A bug today is just a test case you haven't written yet.",
+  "Consistency beats intensity in engineering.",
+  "Refactor early, test continuously, ship confidently.",
 ];
-
-// Fixed calendar festivals format: MM-DD
-const FESTIVALS = {
-  "01-01": "New Year",
-  "08-15": "Independence Day",
-  "10-02": "Gandhi Jayanti",
-  "10-24": "Diwali",
-  "12-25": "Christmas",
-};
 
 export const morningRoutineService = {
   async executeMorningDispatch() {
-    logger.info("Executing 6:00 AM Morning Dispatch...");
+    logger.info(
+      "========== [6:00 AM IST MORNING ROUTINE TRIGGERED] ==========",
+    );
 
-    // Get distinct user IDs that have used the app
+    // 1. Fetch all distinct active users across both project spellings
     const activeUserIds = await Notification.distinct("userId", {
-      appId: "umbra-vault",
+      appId: { $in: ["umbra-vault", "umar-vault"] },
     });
 
+    // Explicitly print the user IDs so you can verify in terminal logs
+    logger.info(`[USERS_FOUND] Total active users: ${activeUserIds.length}`);
+    logger.info(`[USER_IDS_LIST]: ${JSON.stringify(activeUserIds)}`);
+
     if (!activeUserIds.length) {
-      logger.info("No active users found to dispatch morning notifications.");
+      logger.warn("No active users found to dispatch morning notifications.");
       return;
     }
 
-    const now = new Date();
-    const dayOfWeek = now.toLocaleDateString("en-US", { weekday: "long" });
-    const monthDay = `${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
-    const festivalToday = FESTIVALS[monthDay];
+    // 2. Compute date details using Indian Standard Time
+    const event = getIndianCalendarEvent(new Date());
+    logger.info(
+      `[CALENDAR_STATUS] Date (IST): ${event.monthDay} | Day: ${event.dayOfWeek} | Festival: ${event.festival || "None"} | New Month: ${event.isFirstDayOfMonth ? event.monthName : "No"}`,
+    );
 
-    // Pick 1 random quote for today's dev pulse
+    // Pick 1 random quote
     const randomQuote =
       MOTIVATIONAL_QUOTES[
         Math.floor(Math.random() * MOTIVATIONAL_QUOTES.length)
       ];
 
     for (const userId of activeUserIds) {
-      // 1. Festival Check vs Standard Greeting
-      if (festivalToday) {
+      // Priority 1: Indian Festival / Jayanti
+      if (event.festival) {
         await addNotificationJob({
           userId,
           appId: "umbra-vault",
           templateKey: "FESTIVAL_WISHES",
-          params: { name: "there", festivalName: festivalToday },
-          metadata: { category: "holiday", date: monthDay },
+          params: { name: "there", festivalName: event.festival },
+          metadata: { category: "holiday", date: event.monthDay },
         });
-      } else {
+      }
+      // Priority 2: 1st Day of a New Month
+      else if (event.isFirstDayOfMonth) {
+        await addNotificationJob({
+          userId,
+          appId: "umbra-vault",
+          templateKey: "NEW_MONTH_WISHES",
+          params: { name: "there", monthName: event.monthName },
+          metadata: { category: "new_month", month: event.monthName },
+        });
+      }
+      // Priority 3: Standard Daily Greeting
+      else {
         await addNotificationJob({
           userId,
           appId: "umbra-vault",
           templateKey: "DAILY_GREETING",
-          params: { name: "there", day: dayOfWeek },
+          params: { name: "there", day: event.dayOfWeek },
           metadata: { category: "daily_greeting" },
         });
       }
 
-      // 2. Dev Motivation Pulse
+      // Priority 4: Short Dev Motivation Pulse (< 12 words)
       await addNotificationJob({
         userId,
         appId: "umbra-vault",
@@ -77,6 +88,8 @@ export const morningRoutineService = {
       });
     }
 
-    logger.info(`Morning dispatch finished for ${activeUserIds.length} users.`);
+    logger.info(
+      `[MORNING_ROUTINE_COMPLETED] Dispatched for ${activeUserIds.length} users.`,
+    );
   },
 };

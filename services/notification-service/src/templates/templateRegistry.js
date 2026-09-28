@@ -1,9 +1,7 @@
-// src/templates/templateRegistry.js
 import ApiError from "../../../../packages/server-utils/src/api-error.js";
 import { renderTemplate } from "./templateEngine.js";
 
 export const TEMPLATE_REGISTRY = {
-  // Existing Security & Auth Templates
   ACCOUNT_CREATED: {
     title: "Account Created Successfully",
     messageTemplate:
@@ -22,8 +20,6 @@ export const TEMPLATE_REGISTRY = {
       "Your password was updated on {{date}} from {{device}} (IP: {{ip}}).",
     requiredFields: ["date", "device", "ip"],
   },
-
-  // 6:00 AM Cron Templates
   DAILY_GREETING: {
     title: "Good Morning, {{name}}!",
     messageTemplate:
@@ -33,8 +29,14 @@ export const TEMPLATE_REGISTRY = {
   FESTIVAL_WISHES: {
     title: "Happy {{festivalName}}!",
     messageTemplate:
-      "Dear {{name}}, Umar Vault wishes you and your family a joyful {{festivalName}}!",
+      "Dear {{name}}, Umar Vault wishes you a joyful {{festivalName}}!",
     requiredFields: ["name", "festivalName"],
+  },
+  NEW_MONTH_WISHES: {
+    title: "Welcome to {{monthName}}!",
+    messageTemplate:
+      "Happy new month {{name}}! May {{monthName}} bring you breakthrough success.",
+    requiredFields: ["name", "monthName"],
   },
   DEV_MOTIVATION: {
     title: "Daily Dev Pulse",
