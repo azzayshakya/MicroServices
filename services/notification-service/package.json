@@ -18,6 +18,7 @@
     "@shared/mailer": "*",
     "@shared/redis-client": "*",
     "@shared/server-utils": "*",
+    "@shared/mongo-client": "*",
     "@socket.io/redis-adapter": "^8.3.0",
     "bullmq": "^5.41.0",
     "cors": "^2.8.5",

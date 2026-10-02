@@ -1,5 +1,5 @@
+import { ApiError } from "@shared/server-utils";
 import { ENV } from "../config/env.config.js";
-import ApiError from "../../../../packages/server-utils/src/api-error.js";
 
 export function requireInternalKey(req, res, next) {
   const apiKey = req.headers["x-api-key"];

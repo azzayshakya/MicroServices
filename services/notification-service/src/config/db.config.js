@@ -1,8 +1,5 @@
 import { ENV } from "./env.config.js";
-import {
-  connectDB,
-  disconnectDB,
-} from "../../../../packages/mongo-client/index.js";
+import { connectDB, disconnectDB } from "@shared/mongo-client";
 import { logger } from "../utils/logger.js";
 
 export async function initDB() {

@@ -1,5 +1,5 @@
+import { ApiResponse } from "@shared/server-utils";
 import logger from "../utils/logger.js";
-import { ApiResponse } from "../../../../packages/server-utils/src/index.js"; // ✅ Added .js
 
 export function errorHandler(err, req, res, next) {
   const statusCode = err.statusCode || 500;

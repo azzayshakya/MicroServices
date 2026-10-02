@@ -1,4 +1,4 @@
-import ApiError from "../../../../packages/server-utils/src/api-error.js";
+import { ApiError } from "@shared/server-utils";
 
 /**
  * Interpolates variables within {{variable}} syntax.

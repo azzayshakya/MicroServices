@@ -5,9 +5,6 @@ import ApiError from "../../../../packages/server-utils/src/api-error.js";
 import logger from "../utils/logger.js";
 
 export const notificationService = {
-  /**
-   * Compiles template, writes to MongoDB, and pushes to Socket.IO.
-   */
   async processInAppNotification({
     userId,
     appId,

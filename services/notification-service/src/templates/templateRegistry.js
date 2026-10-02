@@ -1,4 +1,4 @@
-import ApiError from "../../../../packages/server-utils/src/api-error.js";
+import { ApiError } from "@shared/server-utils";
 import { renderTemplate } from "./templateEngine.js";
 
 export const TEMPLATE_REGISTRY = {

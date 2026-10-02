@@ -5,9 +5,8 @@ import {
 } from "../queues/notification.queue.js";
 import { notificationService } from "../services/notification.service.js";
 import { TEMPLATE_REGISTRY } from "../templates/templateRegistry.js";
-import ApiError from "../../../../packages/server-utils/src/api-error.js";
-import ApiResponse from "../../../../packages/server-utils/src/api-response.js";
 import { Notification } from "../models/Notification.model.js";
+import { ApiError, ApiResponse } from "@shared/server-utils";
 
 export const triggerNotification = async (req, res, next) => {
   try {
