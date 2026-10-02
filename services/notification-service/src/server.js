@@ -6,11 +6,7 @@ import { initDB, disconnectDB } from "./config/db.config.js";
 import { closeRedisClient } from "./config/redis.config.js";
 import { initSocketServer } from "./sockets/socket.js";
 import { initNotificationWorker } from "./queues/notification.worker.js";
-import {
-  clearAllQueueData,
-  debugPrintAllJobsInQueue,
-  initScheduledCronJobs,
-} from "./queues/notification.queue.js";
+import { initScheduledCronJobs } from "./queues/notification.queue.js";
 import { logger } from "./utils/logger.js";
 
 const server = http.createServer(app);
@@ -23,9 +19,8 @@ let worker = null;
 async function startServer() {
   try {
     await initDB();
-    // ── DEBUG CONTROLS (Keep commented out in normal runs) ──
-    // await clearAllQueueData(); // <--- Uncomment only to reset Redis
-    // await debugPrintAllJobsInQueue(); // <--- Uncomment only to inspect Redis on boot
+    // await clearAllQueueData();
+    // await debugPrintAllJobsInQueue();
     // 2. Schedule the 6:00 AM repeatable cron job
     await initScheduledCronJobs();
 

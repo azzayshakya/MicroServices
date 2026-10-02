@@ -1,9 +1,5 @@
 import { ApiError } from "@shared/server-utils";
 
-/**
- * Interpolates variables within {{variable}} syntax.
- * Rejects if a required variable is missing.
- */
 export function renderTemplate(templateStr, params = {}, requiredParams = []) {
   const missing = requiredParams.filter(
     (param) => params[param] === undefined || params[param] === null,

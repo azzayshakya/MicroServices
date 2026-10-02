@@ -1,7 +1,3 @@
-/**
- * Static ioredis configuration options.
- * No environment variables or credentials belong here.
- */
 export const defaultRedisOptions = {
   // Backoff strategy: up to 10 attempts, 1s delay
   retryStrategy: (times) => {
