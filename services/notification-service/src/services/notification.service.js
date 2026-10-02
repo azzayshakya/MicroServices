@@ -2,7 +2,7 @@ import { Notification } from "../models/Notification.model.js";
 import { compileNotificationContent } from "../templates/templateRegistry.js";
 import { socketService } from "./socket.service.js";
 import ApiError from "../../../../packages/server-utils/src/api-error.js";
-import logger from "@monorepo/logger";
+import logger from "../utils/logger.js";
 
 export const notificationService = {
   /**

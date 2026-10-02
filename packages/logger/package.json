@@ -1,9 +1,12 @@
 {
-  "name": "@monorepo/logger",
+  "name": "@shared/logger",
   "version": "1.0.0",
   "private": true,
-  "main": "index.js",
   "type": "module",
+  "main": "./src/index.js",
+  "exports": {
+    ".": "./src/index.js"
+  },
   "dependencies": {
     "winston": "^3.13.0"
   }

@@ -1,6 +1,6 @@
 import express from "express";
 import process from "node:process";
-import createLogger from "@monorepo/logger";
+import createLogger from "./utils/logger.js";
 import { createRedisClient, closeRedisClient } from "@monorepo/redis-client";
 import { createMailer } from "@monorepo/mailer";
 import { createKafkaClient } from "@monorepo/kafka-client";

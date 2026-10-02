@@ -1,6 +1,6 @@
 import { Queue } from "bullmq";
 import { redisConnection } from "../config/redis.config.js";
-import logger from "@monorepo/logger";
+import logger from "../utils/logger.js";
 
 export const NOTIFICATION_QUEUE_NAME = "notifications-dispatch";
 export const MORNING_CRON_JOB_NAME = "morning-dispatch-cron";

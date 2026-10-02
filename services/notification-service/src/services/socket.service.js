@@ -1,5 +1,5 @@
 import { getIO } from "../sockets/socket.js";
-import logger from "@monorepo/logger";
+import logger from "../utils/logger.js";
 
 export const socketService = {
   emitToUser(userId, event, payload) {

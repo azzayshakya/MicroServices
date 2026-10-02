@@ -6,7 +6,7 @@ import {
 } from "./notification.queue.js";
 import { notificationService } from "../services/notification.service.js";
 import { morningRoutineService } from "../services/morningRoutine.service.js";
-import logger from "@monorepo/logger";
+import logger from "../utils/logger.js";
 
 // Set to 'false' in .env or switch manually to keep failed jobs in Redis for inspection
 const AUTO_PURGE_FAILED_JOBS = process.env.PURGE_FAILED_JOBS !== "false";

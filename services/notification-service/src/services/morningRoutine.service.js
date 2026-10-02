@@ -1,7 +1,7 @@
 import { Notification } from "../models/Notification.model.js";
 import { addNotificationJob } from "../queues/notification.queue.js";
 import { getIndianCalendarEvent } from "../constants/indianCalendar.js";
-import logger from "@monorepo/logger";
+import logger from "../utils/logger.js";
 
 const MOTIVATIONAL_QUOTES = [
   "Make it work, make it right, make it fast.",

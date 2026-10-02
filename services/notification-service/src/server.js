@@ -11,7 +11,7 @@ import {
   debugPrintAllJobsInQueue,
   initScheduledCronJobs,
 } from "./queues/notification.queue.js";
-import logger from "@monorepo/logger";
+import { logger } from "./utils/logger.js";
 
 const server = http.createServer(app);
 

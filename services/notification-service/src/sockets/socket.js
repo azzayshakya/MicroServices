@@ -1,6 +1,6 @@
 import { Server } from "socket.io";
 import { createAdapter } from "@socket.io/redis-adapter";
-import logger from "@monorepo/logger";
+import logger from "../utils/logger.js";
 import { redisConnection } from "../config/redis.config.js";
 import { ENV } from "../config/env.config.js";
 

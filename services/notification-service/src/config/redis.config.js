@@ -1,5 +1,5 @@
-import { createRedisClient, closeRedisClient } from "@monorepo/redis-client";
-import logger from "@monorepo/logger";
+import { createRedisClient, closeRedisClient } from "@shared/redis-client";
+import logger from "../utils/logger.js";
 import { ENV } from "./env.config.js";
 
 export const redisConnection = createRedisClient({

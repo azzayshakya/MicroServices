@@ -1,4 +1,4 @@
-import logger from "@monorepo/logger";
+import logger from "../utils/logger.js";
 import { ApiResponse } from "../../../../packages/server-utils/src/index.js"; // ✅ Added .js
 
 export function errorHandler(err, req, res, next) {
