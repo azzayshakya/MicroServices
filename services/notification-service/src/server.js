@@ -22,7 +22,7 @@ async function startServer() {
     // await clearAllQueueData();
     // await debugPrintAllJobsInQueue();
     // 2. Schedule the 6:00 AM repeatable cron job
-    await initScheduledCronJobs();
+    // await initScheduledCronJobs();
 
     // 3. Start processing queue events only after DB & Cron are ready
     worker = initNotificationWorker();

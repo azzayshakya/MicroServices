@@ -58,7 +58,7 @@ export const INDIAN_FESTIVALS = {
 
   // November
   "11-01": "Govardhan Puja",
-  "11-02": "Bhai Dooj",
+  "11-11": "Bhai Dooj",
   "11-05": "Chhath Puja",
   "11-14": "Children's Day (Jawaharlal Nehru Jayanti)",
   "11-15": "Guru Nanak Jayanti (Gurpurab) & Birsa Munda Jayanti",
